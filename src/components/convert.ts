@@ -52,7 +52,7 @@ function name(params) {
 function errorText(code: string, line: number, col: number) {
     let lines = code.split(/\r?\n/g);
 
-    const arround = 5;
+    const arround = 15;
     let start = line - arround < 0 ? 0 : line - arround;
     let end = line + arround > lines.length - 1 ? lines.length - 1 : line + arround;
     if (start === end) {
@@ -62,10 +62,10 @@ function errorText(code: string, line: number, col: number) {
     let newLines = [];
 
     for (let i = start; i <= end; i++) {
-        if (i === line) {
-            newLines.push(`${' '.repeat(col - 1)} ^`);
+        newLines.push(`${`${i + 1}`.padStart(4, '0')}: ${lines[i]}`);
+        if (i + 1 === line) {
+            newLines.push(`${' '.repeat(col + 6)}^`); // +6 to compensate padStart
         }
-        newLines.push(lines[i]);
     }
 
     return newLines.join('\r\n');
@@ -79,7 +79,7 @@ export function start() {
     } catch (error) {
         console.log('parse error', error.message);
         const { line, col } = getErrorPos(error.message);
-        console.log('trace', errorText(code, line, col));
+        console.log(`trace:\n${errorText(code, line, col)}`);
     }
 
     if (!ast) {
