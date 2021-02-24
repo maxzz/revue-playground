@@ -1,14 +1,43 @@
-import * as recast from 'recast';
-import { Parser } from "acorn";
+import { parse } from "acorn";
+
+class LineNumbers {
+    private lineStarts: number[] = [];
+
+    initLineOffsets(code: string) {
+        const regex = /\r?\n/g;
+        this.lineStarts = [0];
+        while (regex.exec(code)) {
+            this.lineStarts.push(regex.lastIndex);
+        }
+        this.lineStarts.push(code.length);
+    }
+    lineNumber(offset: number): number {
+        let lineNumber = 1;
+        while (this.lineStarts[lineNumber] < offset) {
+            lineNumber++;
+        }
+        return lineNumber;
+    }
+}
+
+let code = `
+function name(params) {
+    var a = {...[1,2]};
+}
+`;
 
 export function start() {
-    let code = `function name(params:type) {}`;
+    let ast;
 
-    const ast = Parser.parse(code);
+    try {
+        ast = parse(code, {ecmaVersion: "latest"});
+    } catch (error) {
+        console.log('parse error', error.message);
+    }
 
-    recast.visit(ast, function visitFunctionDeclaration(path) {
-        // the navigation code here...
-        // return false to stop at this depth
-        return false;
-    });
+    if (!ast) {
+        return;
+    }
+
+    console.log('ast', JSON.stringify(ast, null, 4));
 }

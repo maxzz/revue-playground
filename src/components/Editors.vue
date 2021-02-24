@@ -4,7 +4,7 @@
 
 <script lang="ts">
     import { ref, defineComponent } from "vue";
-    import { start } from './convert.js';
+    import { start } from './convert';
 
     export default defineComponent({
         props: {},
