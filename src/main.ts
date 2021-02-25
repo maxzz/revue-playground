@@ -4,6 +4,7 @@ import 'windi.css';
 
 import Toast, { POSITION } from "vue-toastification";
 //import "vue-toastification/dist/index.css";
+import "./toaster.scss"
 
 const vue = createApp(App);
 vue.use(Toast, {
