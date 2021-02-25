@@ -13,12 +13,17 @@
 <script lang="ts">
     import { ref, defineComponent } from "vue";
     import { start } from './convert';
+    import { useToast } from "vue-toastification";
 
     export default defineComponent({
         props: {},
         setup: () => {
+            console.log('start');
+
+            const toast = useToast();
+
             function onBtnStart() {
-                console.log('start');
+                toast.success("My toast content");
                 start();
             }
             return { onBtnStart };
@@ -26,7 +31,7 @@
     });
 </script>
 
-<style scoped>
+<style lang="scss">
     a {
         color: #42b983;
     }
@@ -42,4 +47,22 @@
         border-radius: 4px;
         color: #304455;
     }
+
+    // Override the variables or import a file that overrides them
+    $vt-color-success: white;
+    $vt-text-color-success: #000;
+
+    // Import the regular Vue Toastification stylesheets (or create your own)
+    @import "vue-toastification/src/scss/_variables";
+    @import "vue-toastification/src/scss/_toastContainer";
+    @import "vue-toastification/src/scss/_toast";
+    @import "vue-toastification/src/scss/_closeButton";
+    @import "vue-toastification/src/scss/_progressBar";
+    @import "vue-toastification/src/scss/_icon";
+    @import "vue-toastification/src/scss/animations/_bounce";
+
+.#{$vt-namespace}__progress-bar {
+  background-color: red;
+}
+
 </style>
