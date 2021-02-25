@@ -6,7 +6,6 @@
         <input class="flex-1 px-3 py-2 border rounded text-gray-600 mr-2" value="abc">
         <input class="flex-1 px-3 py-2 border rounded text-gray-600" value="abc">
     </div>
-    <Toast />
 
     <input type="button" value="start" @click="onBtnStart" class="btn important:focus:ring-0">
 </template>
@@ -17,9 +16,9 @@
 
     export default defineComponent({
         props: {},
-        setup: (props, ctx) => {
+        setup: () => {
             function onBtnStart() {
-                console.log('start', props, ctx);
+                console.log('start');
                 start();
             }
             return { onBtnStart };
