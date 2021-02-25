@@ -1,5 +1,12 @@
 <template>
-    <input type="button" value="start" @click="onBtnStart">
+    <input type="button" value="start" @click="onBtnStart" style="border: revert">
+    <input type="button" value="start" @click="onBtnStart" class="btn">
+    <input type="button" value="start" @click="onBtnStart" class="
+        px-4 py-2
+        border border-solid border-blue-300 rounded shadow-sm 
+        hover:bg-gray-320 
+        active:bg-gray-200 
+        focus:outline-none focus:ring-1 focus:ring-blue-300">
 </template>
 
 <script lang="ts">
