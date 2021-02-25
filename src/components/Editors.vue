@@ -47,4 +47,53 @@
         border-radius: 4px;
         color: #304455;
     }
+
+    // Override the variables or import a file that overrides them
+    //$vt-color-success: white;
+    //$vt-text-color-success: #000;
+
+    //Import the regular Vue Toastification stylesheets (or create your own)
+    @import "vue-toastification/src/scss/_variables";
+    @import "vue-toastification/src/scss/_toastContainer";
+    @import "vue-toastification/src/scss/_toast";
+    @import "vue-toastification/src/scss/_closeButton";
+    @import "vue-toastification/src/scss/_progressBar";
+    @import "vue-toastification/src/scss/_icon";
+    @import "vue-toastification/src/scss/animations/_bounce";
+
+    .#{$vt-namespace}__progress-bar {
+      background-color: rgba(48, 48, 48, 0.2);
+    }
+
+    @keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+    }
+    @keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+    }
+    .tm-fade-enter-active {
+        animation-name: fadeIn;
+        animation-duration: 750ms;
+        animation-fill-mode: both;
+    }
+    .tm-fade-leave-active {
+        animation-name: fadeOut;
+        animation-duration: 750ms;
+        animation-fill-mode: both;
+    }
+    .tm-fade-move {
+        transition-timing-function: ease-in-out;
+        transition-property: all;
+        transition-duration: 400ms;
+    }    
 </style>

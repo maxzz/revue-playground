@@ -9,12 +9,17 @@ import Toast, { POSITION } from "vue-toastification";
 const vue = createApp(App);
 vue.use(Toast, {
     position: POSITION.BOTTOM_RIGHT,
-    timeout: 5000,
+    timeout: 2000,
+    // transition: {
+    //     enter: "Vue-Toastification__fade-enter-active",
+    //     leave: "Vue-Toastification__fade-leave-active",
+    //     move: "Vue-Toastification__fade-move"
+    // }
     transition: {
-        enter: "Vue-Toastification__fade-enter-active",
-        leave: "Vue-Toastification__fade-leave-active",
-        //move: "fade-move"
-    }
+        enter: "tm-fade-enter-active",
+        //leave: "tm-fade-leave-active",
+        //leave: "Vue-Toastification__bounce-leave-active",
+        move: "tm-fade-move"
+    }    
 });
 vue.mount("#app");
-
