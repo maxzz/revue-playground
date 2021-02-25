@@ -23,7 +23,7 @@
             const toast = useToast();
 
             function onBtnStart() {
-                toast.success("My toast content");
+                toast.info("My toast content");
                 start();
             }
             return { onBtnStart };
@@ -47,7 +47,9 @@
         border-radius: 4px;
         color: #304455;
     }
+</style>
 
+<style lang="scss">
     // Override the variables or import a file that overrides them
     //$vt-color-success: white;
     //$vt-text-color-success: #000;
