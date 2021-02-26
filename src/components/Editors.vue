@@ -7,7 +7,9 @@
         <input class="flex-1 px-3 py-2 border rounded text-gray-600" value="abc">
     </div>
 
+    <div class="flex justify-center">
     <input type="button" value="start" @click="onBtnStart" class="btn important:focus:ring-0">
+    </div>
 </template>
 
 <script lang="ts">
