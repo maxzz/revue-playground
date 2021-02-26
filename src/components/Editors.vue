@@ -5,7 +5,7 @@
         <Editor class="flex-1 border border-green-200" />
     </div>
 
-    <div class="mx-4 flex my-4">
+    <div class="mx-4 flex mt-4 mb-1">
         <textarea class="border flex-1" :rows="3"></textarea>
     </div>
     <div class="flex px-4 mb-4">
