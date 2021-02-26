@@ -1,4 +1,13 @@
 <template>
+    <SplitPane>
+        <template v-slot:a>
+            aa
+        </template>
+        <template v-slot:b>
+            bb
+        </template>
+    </SplitPane>
+    
     <div class="split-panel flex px-4">
         <Editor class="flex-1 border border-gray-200" />
         <div class="flex-grow-0 flex-shring-0 w-1"></div>
@@ -23,10 +32,11 @@
     import { start } from './convert';
     import { useToast } from "vue-toastification";
     import Editor from './Editor.vue';
+    import SplitPane from './SplitPane.vue';
 
     export default defineComponent({
         props: {},
-        components: { Editor },
+        components: { Editor, SplitPane },
         setup: () => {
             console.log('start');
 
