@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-    import { defineComponent, onMounted, ref } from 'vue';
+    import { defineComponent, onMounted, onUnmounted, ref } from 'vue';
     import cm from 'codemirror';
     import 'codemirror/mode/javascript/javascript';
     import "codemirror/lib/codemirror.css";
@@ -22,7 +22,18 @@
                     value: 'function test()\n{\n}\n',
                     mode: 'javascript'
                 });
+
+                myEditor.on('change', onChange);
             });
+
+            onUnmounted(() => {
+                console.log('Unmounted');
+                myEditor.off('change', onChange);
+            });
+
+            function onChange(e: any) {
+                console.log('Change', e);
+            }
 
             function onGetText() {
                 let val = myEditor.getValue();
