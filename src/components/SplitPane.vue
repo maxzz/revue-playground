@@ -1,15 +1,11 @@
 <template>
     <div ref="container" class="splitpane">
-        <div :style="styleA">
-            <slot name="a">
-                default a
-            </slot>
+        <div class="splitpane-content" :style="styleA">
+            <slot name="a">a</slot>
         </div>
-        <div class="splitpane-divider flex-grow-0 flex-shrink-0" @mousedown="onMouseDown"></div>
-        <div :style="styleB">
-            <slot name="b">
-                default b
-            </slot>
+        <div class="splitpane-divider" @mousedown="onMouseDown"></div>
+        <div class="splitpane-content">
+            <slot name="b">b</slot>
         </div>
     </div>
 </template>
@@ -35,7 +31,7 @@
                 function moveHandler(event: MouseEvent) {
                     event.preventDefault();
                     let newPosition = (((vertical ? event.pageY : event.pageX) - offset) / size) * 100;
-                    setPosition(Math.floor(Math.min(Math.max(0, newPosition), 99))); // Using 99% as the max value prevents the divider from disappearing
+                    setPosition(Math.min(Math.max(0, newPosition), 99)); // Using 99% as the max value prevents the divider from disappearing
                 };
 
                 function upHandler() {
@@ -50,36 +46,24 @@
             };
 
             type styleAB = {
-                flex: string;
                 minWidth?: string;
-                minHeight?: string;
                 maxWidth?: string;
+                minHeight?: string;
                 maxHeight?: string;
             }
 
             const styleA = reactive<styleAB>({
-                flex: '1',
-            });
-
-            const styleB = reactive<styleAB>({
-                flex: '1',
-                minWidth: '0',
-                minHeight: '0',
             });
 
             function setPosition(x: number) {
                 position.value = x;
-                if (vertical) {
-                    styleA.minHeight = styleA.maxHeight = position.value + '%'; // top
-                } else {
-                    styleA.minWidth = styleA.maxWidth = position.value + '%'; // left
-                }
+                const name = vertical ? 'Height' : 'Width'; // top or left
+                styleA[`min${name}` as 'minWidth' | 'minHeight'] = styleA[`max${name}` as 'maxWidth' | 'maxHeight'] = position.value + '%';
             }
 
             return {
                 container,
                 styleA,
-                styleB,
                 onMouseDown,
             };
         },
@@ -91,29 +75,30 @@
         display: flex;
     }
 
-    // .splitpane-content {
-    //     flex: 1;
-    //     /* for Firefox, otherwise it overflows the parent*/
-    //     min-height: 0;
-    //     min-width: 0;
-    // }
+    .splitpane-content {
+        flex: 1;
+        min-height: 0; // 'min-height: 0; min-width: 0' for Firefox, otherwise it overflows the parent
+        min-width: 0;
+    }
 
     .splitpane-divider {
         //background-color: #ddd;
+        flex-grow: 0;
+        flex-shrink: 0;
         width: 4px;
 
         &.vertical {
             height: 4px;
         }
-    }
 
-    .splitpane-divider:hover {
-        background-color: #999;
-        cursor: col-resize;
-    }
+        &:hover {
+            background-color: #999;
+            cursor: col-resize;
+        }
 
-    .splitpane-divider.vertical:hover {
-        background-color: #999;
-        cursor: row-resize;
+        &.vertical:hover {
+            background-color: #999;
+            cursor: row-resize;
+        }
     }
 </style>

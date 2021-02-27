@@ -1,12 +1,14 @@
 <template>
-    <SplitPane style="m-4">
-        <template v-slot:a>
-            <Editor class="flex-1 border border-gray-200" />
-        </template>
-        <template v-slot:b>
-            <Editor class="flex-1 border border-green-200" />
-        </template>
-    </SplitPane>
+    <div class="px-4">
+        <SplitPane>
+            <template v-slot:a>
+                <Editor class="flex-1 border border-gray-200" />
+            </template>
+            <template v-slot:b>
+                <Editor class="flex-1 border border-green-200" />
+            </template>
+        </SplitPane>
+    </div>
     
     <div class="split-panel flex px-4">
         <Editor class="flex-1 border border-gray-200" />
