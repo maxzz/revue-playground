@@ -1,10 +1,10 @@
 <template>
-    <SplitPane>
+    <SplitPane style="m-4">
         <template v-slot:a>
-            aa<br><br><br>aa
+            <Editor class="flex-1 border border-gray-200" />
         </template>
         <template v-slot:b>
-            bb<br><br><br><br><br>bb
+            <Editor class="flex-1 border border-green-200" />
         </template>
     </SplitPane>
     

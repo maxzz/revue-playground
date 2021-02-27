@@ -1,12 +1,12 @@
 <template>
-    <div ref="container" class="flex px-4">
-        <div class="bg-red-200" :style="styleA">
+    <div ref="container" class="splitpane">
+        <div :style="styleA">
             <slot name="a">
                 default a
             </slot>
         </div>
-        <div class="splitpane-divider horizontal flex-grow-0 flex-shrink-0" @mousedown="onMouseDown"></div>
-        <div class="bg-green-200" :style="styleB">
+        <div class="splitpane-divider flex-grow-0 flex-shrink-0" @mousedown="onMouseDown"></div>
+        <div :style="styleB">
             <slot name="b">
                 default b
             </slot>
@@ -87,34 +87,28 @@
 </script>
 
 <style lang="scss">
-    .splitpane-content {
-        flex: 1;
-        /* for Firefox, otherwise it overflows the parent*/
-        min-height: 0;
-        min-width: 0;
+    .splitpane {
+        display: flex;
     }
 
-    .splitpane {
-        flex: 1;
-        /* for Firefox, otherwise it overflows the parent*/
-        min-height: 0;
-        min-width: 0;
-    }
+    // .splitpane-content {
+    //     flex: 1;
+    //     /* for Firefox, otherwise it overflows the parent*/
+    //     min-height: 0;
+    //     min-width: 0;
+    // }
 
     .splitpane-divider {
-        background-color: #ddd;
-    }
-
-    .splitpane-divider.horizontal {
+        //background-color: #ddd;
         width: 4px;
-    }
 
-    .splitpane-divider.vertical {
-        height: 4px;
+        &.vertical {
+            height: 4px;
+        }
     }
 
     .splitpane-divider:hover {
-        background-color: red; //#999
+        background-color: #999;
         cursor: col-resize;
     }
 
