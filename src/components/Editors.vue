@@ -1,10 +1,10 @@
 <template>
     <SplitPane>
         <template v-slot:a>
-            aa
+            aa<br><br><br>aa
         </template>
         <template v-slot:b>
-            bb
+            bb<br><br><br><br><br>bb
         </template>
     </SplitPane>
     

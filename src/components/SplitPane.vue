@@ -12,10 +12,6 @@
             </slot>
         </div>
     </div>
-    <pre>
-    {{styleA}}
-    {{styleB}}
-    </pre>
 </template>
 
 <script lang="ts">
@@ -30,30 +26,23 @@
 
             const onMouseDown = function(event: MouseEvent) {
                 event.preventDefault(); // This is needed to prevent text selection in Safari
-                console.log('---------Down');
 
                 const elContainer = container.value as HTMLElement;
                 const offset = vertical ? elContainer.offsetTop : elContainer.offsetLeft;
                 const size = vertical ? elContainer.offsetHeight : elContainer.offsetWidth;
-                //document.body.style.cursor = vertical ? 'row-resize' : 'col-resize';
+                document.body.style.cursor = vertical ? 'row-resize' : 'col-resize';
 
-                let moveHandler = (event: MouseEvent) => {
+                function moveHandler(event: MouseEvent) {
                     event.preventDefault();
                     let newPosition = (((vertical ? event.pageY : event.pageX) - offset) / size) * 100;
-                    newPosition = Math.floor(Math.min(Math.max(0, newPosition), 99)); // Using 99% as the max value prevents the divider from disappearing
-                    setPosition(newPosition);
+                    setPosition(Math.floor(Math.min(Math.max(0, newPosition), 99))); // Using 99% as the max value prevents the divider from disappearing
                 };
 
-                let upHandler = () => {
+                function upHandler() {
+                    document.body.style.cursor = '';
                     document.removeEventListener('mousemove', moveHandler);
                     document.removeEventListener('mouseup', upHandler);
-                    //document.body.style.cursor = '';
-
-                    console.log('>>>>>>>>>>>up', position.value);
-
-                    if (onResize) {
-                        onResize();
-                    }
+                    onResize&& onResize();
                 };
 
                 document.addEventListener('mousemove', moveHandler);
@@ -80,7 +69,6 @@
 
             function setPosition(x: number) {
                 position.value = x;
-
                 if (vertical) {
                     styleA.minHeight = styleA.maxHeight = position.value + '%'; // top
                 } else {
@@ -126,7 +114,7 @@
     }
 
     .splitpane-divider:hover {
-        background-color: #999;
+        background-color: red; //#999
         cursor: col-resize;
     }
 
