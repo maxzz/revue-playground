@@ -5,13 +5,17 @@
                 default a
             </slot>
         </div>
-        <div class="devider w-1 flex-grow-0 flex-shrink-0 cursor-col-resize" @mousedown="onMouseDown"></div>
+        <div class="splitpane-divider horizontal flex-grow-0 flex-shrink-0" @mousedown="onMouseDown"></div>
         <div class="bg-green-200" :style="styleB">
             <slot name="b">
                 default b
             </slot>
         </div>
     </div>
+    <pre>
+    {{styleA}}
+    {{styleB}}
+    </pre>
 </template>
 
 <script lang="ts">
@@ -22,16 +26,16 @@
             const position = ref(0);
             let onResize: (() => void) | null = null;
             const container = ref<HTMLElement>();
-            const vertical = true;
+            const vertical = false;
 
             const onMouseDown = function(event: MouseEvent) {
                 event.preventDefault(); // This is needed to prevent text selection in Safari
+                console.log('---------Down');
 
                 const elContainer = container.value as HTMLElement;
                 const offset = vertical ? elContainer.offsetTop : elContainer.offsetLeft;
                 const size = vertical ? elContainer.offsetHeight : elContainer.offsetWidth;
-                
-                document.body.style.cursor = vertical ? 'row-resize' : 'col-resize';
+                //document.body.style.cursor = vertical ? 'row-resize' : 'col-resize';
 
                 let moveHandler = (event: MouseEvent) => {
                     event.preventDefault();
@@ -43,7 +47,9 @@
                 let upHandler = () => {
                     document.removeEventListener('mousemove', moveHandler);
                     document.removeEventListener('mouseup', upHandler);
-                    document.body.style.cursor = '';
+                    //document.body.style.cursor = '';
+
+                    console.log('>>>>>>>>>>>up', position.value);
 
                     if (onResize) {
                         onResize();
@@ -53,17 +59,6 @@
                 document.addEventListener('mousemove', moveHandler);
                 document.addEventListener('mouseup', upHandler);
             };
-
-            function setPosition(x: number) {
-                console.log('setpos', x);
-                position.value = x;
-
-                if (vertical) {
-                    styleA.minHeight = styleA.maxHeight = position + '%'; // top
-                } else {
-                    styleA.minWidth = styleA.maxWidth = position + '%'; // left
-                }
-            }
 
             type styleAB = {
                 flex: string;
@@ -83,6 +78,16 @@
                 minHeight: '0',
             });
 
+            function setPosition(x: number) {
+                position.value = x;
+
+                if (vertical) {
+                    styleA.minHeight = styleA.maxHeight = position.value + '%'; // top
+                } else {
+                    styleA.minWidth = styleA.maxWidth = position.value + '%'; // left
+                }
+            }
+
             return {
                 container,
                 styleA,
@@ -92,3 +97,41 @@
         },
     });
 </script>
+
+<style lang="scss">
+    .splitpane-content {
+        flex: 1;
+        /* for Firefox, otherwise it overflows the parent*/
+        min-height: 0;
+        min-width: 0;
+    }
+
+    .splitpane {
+        flex: 1;
+        /* for Firefox, otherwise it overflows the parent*/
+        min-height: 0;
+        min-width: 0;
+    }
+
+    .splitpane-divider {
+        background-color: #ddd;
+    }
+
+    .splitpane-divider.horizontal {
+        width: 4px;
+    }
+
+    .splitpane-divider.vertical {
+        height: 4px;
+    }
+
+    .splitpane-divider:hover {
+        background-color: #999;
+        cursor: col-resize;
+    }
+
+    .splitpane-divider.vertical:hover {
+        background-color: #999;
+        cursor: row-resize;
+    }
+</style>
