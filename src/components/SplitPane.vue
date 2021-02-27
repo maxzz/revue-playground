@@ -73,9 +73,11 @@
 <style lang="scss">
     .splitpane {
         display: flex;
+        flex: 1;
     }
 
     .splitpane-content {
+        display: flex;
         flex: 1;
         min-height: 0; // 'min-height: 0; min-width: 0' for Firefox, otherwise it overflows the parent
         min-width: 0;

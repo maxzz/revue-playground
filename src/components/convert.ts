@@ -27,7 +27,7 @@ function getErrorPos(error: string) {
     return m ? { line: +m[1], col: +m[2] } : {line: 0, col: 0};
 }
 
-let code = `
+export let defaultCode = `
 function name(params) {
     var a = {...[1,2]};
     var a = {...[1,2]};
@@ -75,11 +75,11 @@ export function start() {
     let ast;
 
     try {
-        ast = parse(code, {ecmaVersion: "latest"});
+        ast = parse(defaultCode, {ecmaVersion: "latest"});
     } catch (error) {
         console.log('parse error', error.message);
         const { line, col } = getErrorPos(error.message);
-        console.log(`trace:\n${errorText(code, line, col)}`);
+        console.log(`trace:\n${errorText(defaultCode, line, col)}`);
     }
 
     if (!ast) {

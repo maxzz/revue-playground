@@ -1,5 +1,5 @@
 <template>
-    <div class="px-4 mb-4">
+    <div class="px-4 mb-4 flex flex-1">
         <SplitPane>
             <template v-slot:a>
                 <Editor class="flex-1 border border-gray-200" />
@@ -10,8 +10,8 @@
         </SplitPane>
     </div>
     
-    <div class="flex justify-center">
-    <input type="button" value="start" @click="onBtnStart" class="btn important:focus:ring-0">
+    <div class="flex justify-center mb-4">
+        <input type="button" value="start" @click="onBtnStart" class="btn important:focus:ring-0">
     </div>
 </template>
 
@@ -26,7 +26,7 @@
         props: {},
         components: { Editor, SplitPane },
         setup: () => {
-            console.log('start');
+            //console.log('start');
 
             const toast = useToast();
 

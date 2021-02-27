@@ -1,7 +1,6 @@
 <template>
     <div class="flex flex-col">
-        <div ref="elEditor">
-        </div>
+        <div ref="elEditor" class="flex-1"></div>
         <div><input type="button" value="Get" @click="onGetText"></div>
     </div>
 </template>
@@ -11,6 +10,7 @@
     import cm from 'codemirror';
     import 'codemirror/mode/javascript/javascript';
     import "codemirror/lib/codemirror.css";
+import { defaultCode } from './convert';
 
     export default defineComponent({
         setup() {
@@ -19,15 +19,17 @@
 
             onMounted(() => {
                 myEditor = cm(elEditor.value, {
-                    value: 'function test()\n{\n}\n',
+                    value: '', // 'function test()\n{\n}\n',
                     mode: 'javascript'
                 });
+
+                myEditor.setValue(defaultCode);
 
                 myEditor.on('change', onChange);
             });
 
             onUnmounted(() => {
-                console.log('Unmounted');
+                //console.log('Unmounted');
                 myEditor.off('change', onChange);
             });
 
@@ -51,3 +53,9 @@
         }
     });
 </script>
+
+<style lang="scss">
+    .CodeMirror {
+        height: auto;
+    }
+</style>
