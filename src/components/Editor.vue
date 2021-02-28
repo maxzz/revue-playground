@@ -1,37 +1,56 @@
 <template>
     <div class="flex flex-col">
         <div ref="elEditor" class="flex-1"></div>
-        <div><input type="button" value="Get" @click="onGetText"></div>
+        <div class="flex justify-end">
+            <input type="button" value="Get" @click="onGetText">
+        </div>
     </div>
 </template>
 
 <script lang="ts">
-    import { defineComponent, onMounted, onUnmounted, ref } from 'vue';
+    import { defineComponent, onMounted, onUnmounted, ref, watch } from 'vue';
     import cm from 'codemirror';
     import 'codemirror/mode/javascript/javascript';
     import "codemirror/lib/codemirror.css";
 import { defaultCode } from './convert';
 
     export default defineComponent({
-        setup() {
+        props: {
+            editorText: {
+                type: String,
+                default: '',
+            },
+            onChange: {
+                type: Function,
+            }
+        },
+        setup(props) {
             const elEditor = ref();
             let myEditor: cm.Editor;
 
+            const editorText = ref(props.editorText);
+
             onMounted(() => {
                 myEditor = cm(elEditor.value, {
-                    value: '', // 'function test()\n{\n}\n',
+                    value: editorText.value, // 'function test()\n{\n}\n',
                     mode: 'javascript'
                 });
 
-                myEditor.setValue(defaultCode);
+                //myEditor.setValue(defaultCode);
 
-                myEditor.on('change', onChange);
+                myEditor.on('change', onEditorChange);
             });
 
             onUnmounted(() => {
-                //console.log('Unmounted');
+                console.log('Unmounted');
                 clearTimeout(updateTimer);
-                myEditor.off('change', onChange);
+                myEditor.off('change', onEditorChange);
+            });
+
+            watch(() => props.editorText, () => {
+                editorText.value = props.editorText;
+                myEditor.setValue(editorText.value);
+                console.log('cjhan');
             });
 
             let updateTimer: number;
@@ -41,11 +60,6 @@ import { defaultCode } from './convert';
                     let val = myEditor.getValue();
                     console.log('Change', val);
                 }, 200);
-            }
-
-            function onChange(e: any) {
-                //console.log('Change', e);
-                onEditorChange();
             }
 
             function onGetText() {

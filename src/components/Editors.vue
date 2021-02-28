@@ -2,7 +2,7 @@
     <div class="px-4 mb-4 flex flex-1">
         <SplitPane>
             <template v-slot:a>
-                <Editor class="flex-1 border border-gray-200" />
+                <Editor class="flex-1 border border-gray-200" :editorText="'left js code'" />
             </template>
             <template v-slot:b>
                 <Editor class="flex-1 border border-green-200" />
