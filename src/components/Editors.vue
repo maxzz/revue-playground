@@ -36,7 +36,7 @@
             }
 
             function onTextChange(newText: string) {
-                console.log(`newText "${newText}"`);
+                //console.log(`newText "${newText}"`);
             }
 
             return { 

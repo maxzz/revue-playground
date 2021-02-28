@@ -1,14 +1,15 @@
 <template>
     <div class="flex flex-col">
         <div ref="elEditor" class="flex-1"></div>
-        <div class="flex justify-end">
+        <div class="flex justify-end items-center">
+            <span class="mr-4 text-xs">Ln: {{editorPos.ln}} Col: {{editorPos.col}}</span>
             <input type="button" value="Get" @click="onGetText">
         </div>
     </div>
 </template>
 
 <script lang="ts">
-    import { defineComponent, onMounted, onUnmounted, PropType, ref, watch } from 'vue';
+    import { defineComponent, onMounted, onUnmounted, PropType, reactive, ref, watch } from 'vue';
     import cm from 'codemirror';
     import 'codemirror/mode/javascript/javascript';
     import "codemirror/lib/codemirror.css";
@@ -29,13 +30,15 @@
             let myEditor: cm.Editor;
 
             const editorText = ref(props.editorText);
+            const editorPos = reactive({ln: 0, col: 0});
 
             onMounted(() => {
                 console.log('Mounted');
 
                 myEditor = cm(elEditor.value, {
                     value: editorText.value, // 'function test()\n{\n}\n',
-                    mode: 'javascript'
+                    mode: 'javascript',
+                    lineNumbers: true,
                 });
 
                 //myEditor.setValue(defaultCode);
@@ -64,7 +67,7 @@
                 clearTimeout(timerTextUpdate);
                 timerTextUpdate = setTimeout(() => {
                     let val = myEditor.getValue();
-                    console.log('Change', val);
+                    //console.log('Change', val);
                     props.onTextChange && props.onTextChange(val);
                 }, 200);
             }
@@ -75,8 +78,11 @@
                 timerCursorUpdate = setTimeout(() => {
                     let cursor = myEditor.getCursor();
                     let pos = myEditor.getDoc().indexFromPos(cursor);
-                    console.log(`Activity pos: ${pos}, cursor: ${JSON.stringify(cursor, null, 4)}`);
-                }, 200);
+
+                    editorPos.ln = cursor.line;
+                    editorPos.col = cursor.ch;
+                    //console.log(`Activity pos: ${pos}, cursor: ${JSON.stringify(cursor, null, 4)}`);
+                }, 100); // a shorter interval to fire cursor pos changes before text changes.
             }
 
             function onGetText() {
@@ -89,7 +95,8 @@
 
             return {
                 elEditor,
-                onGetText
+                editorPos,
+                onGetText,
 
             };
         }
