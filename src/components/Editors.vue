@@ -2,7 +2,7 @@
     <div class="px-4 mb-4 flex flex-1">
         <SplitPane>
             <template v-slot:a>
-                <Editor class="flex-1 border border-gray-200" :editorText="'left js code'" />
+                <Editor class="flex-1 border border-gray-200" :editorText="'left js code'" :onTextChange="onTextChange" />
             </template>
             <template v-slot:b>
                 <Editor class="flex-1 border border-green-200" />
@@ -34,7 +34,15 @@
                 toast.info("My toast content");
                 start();
             }
-            return { onBtnStart };
+
+            function onTextChange(newText: string) {
+                console.log(`newText "${newText}"`);
+            }
+
+            return { 
+                onBtnStart,
+                onTextChange,
+            };
         },
     });
 </script>

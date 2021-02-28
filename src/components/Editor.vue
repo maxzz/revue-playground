@@ -8,11 +8,11 @@
 </template>
 
 <script lang="ts">
-    import { defineComponent, onMounted, onUnmounted, ref, watch } from 'vue';
+    import { defineComponent, onMounted, onUnmounted, PropType, ref, watch } from 'vue';
     import cm from 'codemirror';
     import 'codemirror/mode/javascript/javascript';
     import "codemirror/lib/codemirror.css";
-import { defaultCode } from './convert';
+    import { defaultCode } from './convert';
 
     export default defineComponent({
         props: {
@@ -20,8 +20,8 @@ import { defaultCode } from './convert';
                 type: String,
                 default: '',
             },
-            onChange: {
-                type: Function,
+            onTextChange: {
+                type: Function as PropType<(newText: string) => void>
             }
         },
         setup(props) {
@@ -31,6 +31,8 @@ import { defaultCode } from './convert';
             const editorText = ref(props.editorText);
 
             onMounted(() => {
+                console.log('Mounted');
+
                 myEditor = cm(elEditor.value, {
                     value: editorText.value, // 'function test()\n{\n}\n',
                     mode: 'javascript'
@@ -43,6 +45,7 @@ import { defaultCode } from './convert';
 
             onUnmounted(() => {
                 console.log('Unmounted');
+
                 clearTimeout(updateTimer);
                 myEditor.off('change', onEditorChange);
             });
@@ -50,7 +53,7 @@ import { defaultCode } from './convert';
             watch(() => props.editorText, () => {
                 editorText.value = props.editorText;
                 myEditor.setValue(editorText.value);
-                console.log('cjhan');
+                console.log('changed');
             });
 
             let updateTimer: number;
@@ -59,6 +62,7 @@ import { defaultCode } from './convert';
                 updateTimer = setTimeout(() => {
                     let val = myEditor.getValue();
                     console.log('Change', val);
+                    props.onTextChange && props.onTextChange(val);
                 }, 200);
             }
 
