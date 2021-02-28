@@ -47,7 +47,8 @@
             onUnmounted(() => {
                 console.log('Unmounted');
 
-                clearTimeout(updateTimer);
+                clearTimeout(timerTextUpdate);
+                clearTimeout(timerCursorUpdate);
                 myEditor.off('change', onEditorChange);
                 myEditor.off('cursorActivity', onEditorcursorActivity);
             });
@@ -58,19 +59,20 @@
                 console.log('changed');
             });
 
-            let updateTimer: number;
+            let timerTextUpdate: number;
             function onEditorChange() {
-                clearTimeout(updateTimer);
-                updateTimer = setTimeout(() => {
+                clearTimeout(timerTextUpdate);
+                timerTextUpdate = setTimeout(() => {
                     let val = myEditor.getValue();
                     console.log('Change', val);
                     props.onTextChange && props.onTextChange(val);
                 }, 200);
             }
 
+            let timerCursorUpdate: number;
             function onEditorcursorActivity() {
-                clearTimeout(updateTimer);
-                updateTimer = setTimeout(() => {
+                clearTimeout(timerCursorUpdate);
+                timerCursorUpdate = setTimeout(() => {
                     let cursor = myEditor.getCursor();
                     let pos = myEditor.getDoc().indexFromPos(cursor);
                     console.log(`Activity pos: ${pos}, cursor: ${JSON.stringify(cursor, null, 4)}`);
