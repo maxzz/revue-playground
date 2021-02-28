@@ -30,11 +30,22 @@ import { defaultCode } from './convert';
 
             onUnmounted(() => {
                 //console.log('Unmounted');
+                clearTimeout(updateTimer);
                 myEditor.off('change', onChange);
             });
 
+            let updateTimer: number;
+            function onEditorChange() {
+                clearTimeout(updateTimer);
+                updateTimer = setTimeout(() => {
+                    let val = myEditor.getValue();
+                    console.log('Change', val);
+                }, 200);
+            }
+
             function onChange(e: any) {
-                console.log('Change', e);
+                //console.log('Change', e);
+                onEditorChange();
             }
 
             function onGetText() {
