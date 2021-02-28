@@ -5,7 +5,7 @@
                 <Editor class="flex-1 border border-gray-200" :editorText="defaultCode" :onTextChange="onTextChange" />
             </template>
             <template v-slot:b>
-                <Editor class="flex-1 border border-green-200" />
+                <Editor class="flex-1 border border-green-200" :editor-text="secondEditorText" />
             </template>
         </SplitPane>
     </div>
@@ -36,7 +36,9 @@
                 start();
             }
 
+            const secondEditorText = ref('');
             function onTextChange(newText: string) {
+                secondEditorText.value = newText;
                 //console.log(`newText "${newText}"`);
             }
 
@@ -44,6 +46,7 @@
                 onBtnStart,
                 onTextChange,
                 defaultCode,
+                secondEditorText,
             };
         },
     });
