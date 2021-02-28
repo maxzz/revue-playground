@@ -2,7 +2,7 @@
     <div class="px-4 mb-4 flex flex-1">
         <SplitPane>
             <template v-slot:a>
-                <Editor class="flex-1 border border-gray-200" :editorText="'left js code'" :onTextChange="onTextChange" />
+                <Editor class="flex-1 border border-gray-200" :editorText="defaultCode" :onTextChange="onTextChange" />
             </template>
             <template v-slot:b>
                 <Editor class="flex-1 border border-green-200" />
@@ -21,6 +21,7 @@
     import { useToast } from "vue-toastification";
     import Editor from './Editor.vue';
     import SplitPane from './SplitPane.vue';
+    import { defaultCode } from './convert';
 
     export default defineComponent({
         props: {},
@@ -31,7 +32,7 @@
             const toast = useToast();
 
             function onBtnStart() {
-                toast.info("My toast content");
+                //toast.info("My toast content");
                 start();
             }
 
@@ -42,6 +43,7 @@
             return { 
                 onBtnStart,
                 onTextChange,
+                defaultCode,
             };
         },
     });
