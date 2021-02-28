@@ -11,7 +11,7 @@
     </div>
     
     <div class="flex justify-center mb-4">
-        <input type="button" value="start" @click="onBtnStart" class="btn important:focus:ring-0">
+        <input type="button" value="Start Test" @click="onBtnStart" class="btn important:focus:ring-0">
     </div>
 </template>
 

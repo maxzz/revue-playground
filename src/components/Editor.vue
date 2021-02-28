@@ -1,11 +1,11 @@
 <template>
     <div class="flex flex-col">
         <div ref="elEditor" class="flex-1"></div>
-        <div class="flex justify-end items-center">
-            <span class="mr-4 text-xs flex-1">Ln: {{editorPos.ln}} Col: {{editorPos.col}}</span>
+        <div class="flex justify-end items-center bg-gray-200 py-1">
+            <span class="mx-2 text-xs flex-1">Ln: {{editorPos.ln}} Col: {{editorPos.col}}</span>
             <input class="px-1 border-1 w-8 mr-1" type="button" value="-" @click="onTestRemoveErrorClick">
             <input class="px-1 border-1 w-8 mr-1" type="button" value="+" @click="onTestAddErrorClick">
-            <input class="px-1 border-1 " type="button" value="Test" @click="onTestClick">
+            <!-- <input class="px-1 border-1 " type="button" value="Test" @click="onTestClick"> -->
         </div>
     </div>
 </template>
