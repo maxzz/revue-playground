@@ -1,6 +1,6 @@
 <template>
-    <div class="flex flex-col">
-        <div ref="elEditor" class="flex-1"></div>
+    <div class="flex flex-col min-w-0 min-h-0">
+        <div ref="elEditor" class="flex-1 flex min-w-0 min-h-0"></div>
         <div class="flex justify-end items-center bg-gray-200 py-1">
             <span class="mx-2 text-xs flex-1">Ln: {{editorPos.ln}} Col: {{editorPos.col}}</span>
             <input class="px-1 border-1 w-8 mr-1" type="button" value="-" @click="onTestRemoveErrorClick">
@@ -15,6 +15,7 @@
     import cm from 'codemirror';
     import 'codemirror/mode/javascript/javascript';
     import "codemirror/lib/codemirror.css";
+import { clear, subscribe } from './util-events';
 
     export default defineComponent({
         props: {
@@ -37,6 +38,8 @@
             const editorPos = reactive({ln: 0, col: 0});
             //const editorErr = ref(0);
 
+            const subscriptions: any[] = [];
+
             onMounted(() => {
                 //console.log('Mounted', props, ctx);
 
@@ -50,6 +53,9 @@
 
                 myEditor.on('change', onEditorChange);
                 myEditor.on('cursorActivity', onEditorcursorActivity);
+                subscriptions.push(subscribe('PANEL_RESIZE', () => {
+                    console.log('resize');
+                    myEditor.refresh()}));
             });
 
             onUnmounted(() => {
@@ -59,6 +65,7 @@
                 clearTimeout(timerCursorUpdate);
                 myEditor.off('change', onEditorChange);
                 myEditor.off('cursorActivity', onEditorcursorActivity);
+                clear(subscriptions);
             });
 
             watch(() => props.editText, () => {

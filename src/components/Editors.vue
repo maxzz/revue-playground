@@ -22,6 +22,7 @@
     import Editor from './Editor.vue';
     import SplitPane from './SplitPane.vue';
     import { defaultCode } from './convert';
+    import { publish } from'./util-events';
 
     export default defineComponent({
         props: {},
@@ -44,7 +45,7 @@
             }
 
             function onSplitterResize() {
-                
+                publish('PANEL_RESIZE');
             }
 
             return { 
