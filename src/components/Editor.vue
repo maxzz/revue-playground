@@ -1,21 +1,20 @@
 <template>
     <div class="flex flex-col min-w-0 min-h-0">
-        <div ref="elEditor" class="flex-1 flex min-w-0 min-h-0"></div>
+        <div ref="elEditor" class="flex flex-1 min-w-0 min-h-0"></div>
         <div class="flex justify-end items-center bg-gray-200 py-1">
             <span class="mx-2 text-xs flex-1">Ln: {{editorPos.ln}} Col: {{editorPos.col}}</span>
             <input class="px-1 border-1 w-8 mr-1" type="button" value="-" @click="onTestRemoveErrorClick">
             <input class="px-1 border-1 w-8 mr-1" type="button" value="+" @click="onTestAddErrorClick">
-            <!-- <input class="px-1 border-1 " type="button" value="Test" @click="onTestClick"> -->
         </div>
     </div>
 </template>
 
 <script lang="ts">
-    import { defineComponent, onMounted, onUnmounted, PropType, reactive, ref, watch, getCurrentInstance } from 'vue';
+    import { defineComponent, onMounted, onUnmounted, PropType, reactive, ref, watch } from 'vue';
     import cm from 'codemirror';
     import 'codemirror/mode/javascript/javascript';
     import "codemirror/lib/codemirror.css";
-import { clear, subscribe } from './util-events';
+    import { clear, subscribe } from './util-events';
 
     export default defineComponent({
         props: {
@@ -28,39 +27,27 @@ import { clear, subscribe } from './util-events';
             }
         },
         setup(props, ctx) {
-            //console.log('Editor', props, ctx);
-            console.log("Editor Instance", getCurrentInstance());
-
             const elEditor = ref();
             let myEditor: cm.Editor;
 
             const editorText = ref(props.editText);
             const editorPos = reactive({ln: 0, col: 0});
-            //const editorErr = ref(0);
 
             const subscriptions: any[] = [];
 
             onMounted(() => {
-                //console.log('Mounted', props, ctx);
-
                 myEditor = cm(elEditor.value, {
-                    value: editorText.value, // 'function test()\n{\n}\n',
+                    value: editorText.value,
                     mode: 'javascript',
                     lineNumbers: true,
                 });
 
-                //myEditor.setValue(defaultCode);
-
                 myEditor.on('change', onEditorChange);
                 myEditor.on('cursorActivity', onEditorcursorActivity);
-                subscriptions.push(subscribe('PANEL_RESIZE', () => {
-                    console.log('resize');
-                    myEditor.refresh()}));
+                subscriptions.push(subscribe('PANEL_RESIZE', () => myEditor.refresh()));
             });
 
             onUnmounted(() => {
-                console.log('Unmounted');
-
                 clearTimeout(timerTextUpdate);
                 clearTimeout(timerCursorUpdate);
                 myEditor.off('change', onEditorChange);
@@ -71,13 +58,7 @@ import { clear, subscribe } from './util-events';
             watch(() => props.editText, () => {
                 editorText.value = props.editText;
                 myEditor.setValue(editorText.value);
-                console.log('changed');
             });
-
-            // watch(() => editorErr.value, () => {
-            //     const val = editorErr.value;
-            //     console.log('errorPos', val);
-            // });
 
             function setErrorLine(line: number, isSet: boolean) {
                 if (isSet) {
@@ -92,7 +73,6 @@ import { clear, subscribe } from './util-events';
                 clearTimeout(timerTextUpdate);
                 timerTextUpdate = setTimeout(() => {
                     let val = myEditor.getValue();
-                    //console.log('Change', val);
                     props.onTextChange && props.onTextChange(val);
                 }, 200);
             }
@@ -118,25 +98,11 @@ import { clear, subscribe } from './util-events';
                 setErrorLine(editorPos.ln, false);
             }
 
-            function onTestClick() {
-                // editorErr.value = editorErr.value + 1;
-                console.log('click');
-
-                // let val = myEditor.getValue();
-                // console.log(val);
-
-                // let doc = myEditor.getDoc();
-                // console.log(doc);
-            }
-
             return {
                 elEditor,
                 editorPos,
-                // editorErr,
                 onTestRemoveErrorClick,
                 onTestAddErrorClick,
-                onTestClick,
-
             };
         }
     });

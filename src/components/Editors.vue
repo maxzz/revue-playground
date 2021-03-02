@@ -1,5 +1,5 @@
 <template>
-    <div class="px-4 mb-4 flex flex-1">
+    <div class="flex flex-1 px-4 mb-4">
         <SplitPane :onResize="onSplitterResize">
             <template v-slot:a>
                 <Editor class="flex-1 border border-gray-200" :editText="defaultCode" :onTextChange="onTextChange" />
@@ -9,39 +9,34 @@
             </template>
         </SplitPane>
     </div>
-    
+
     <div class="flex justify-center mb-4">
         <input type="button" value="Start Test" @click="onBtnStart" class="btn important:focus:ring-0">
     </div>
 </template>
 
 <script lang="ts">
-    import { ref, defineComponent, getCurrentInstance } from "vue";
-    import { start } from './convert';
+    import { ref, defineComponent } from "vue";
     import { useToast } from "vue-toastification";
-    import Editor from './Editor.vue';
     import SplitPane from './SplitPane.vue';
-    import { defaultCode } from './convert';
+    import Editor from './Editor.vue';
     import { publish } from'./util-events';
+    import { start, defaultCode } from './convert';
 
     export default defineComponent({
         props: {},
         components: { Editor, SplitPane },
         setup: () => {
-            //console.log('start', props, ctx);
-            console.log("PARENT Instance", getCurrentInstance());
-
+            //console.log('start');
             const toast = useToast();
 
             function onBtnStart() {
-                //toast.info("My toast content");
-                start();
+                start(); //toast.info("My toast content");
             }
 
             const secondEditText = ref('');
             function onTextChange(newText: string) {
                 secondEditText.value = newText;
-                //console.log(`newText "${newText}"`);
             }
 
             function onSplitterResize() {

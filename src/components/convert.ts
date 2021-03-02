@@ -27,8 +27,8 @@ function getErrorPos(error: string) {
     return m ? { line: +m[1], col: +m[2] } : {line: 0, col: 0};
 }
 
-export let defaultCode = `
-function name(params) {
+export let defaultCode = 
+`function name(params) {
     var a = {...[1,2]};
     var a = {...[1,2]};
     var a = {...[1,2]};

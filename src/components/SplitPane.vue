@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-    import { defineComponent, PropType, reactive, ref, getCurrentInstance } from "vue";
+    import { defineComponent, PropType, reactive, ref } from "vue";
 
     export default defineComponent({
         props: {
@@ -23,8 +23,6 @@
             const position = ref(0);
             const container = ref<HTMLElement>();
             const vertical = false;
-
-            console.log("SPLITPANE Instance", getCurrentInstance());
 
             const onMouseDown = function(event: MouseEvent) {
                 event.preventDefault(); // This is needed to prevent text selection in Safari
