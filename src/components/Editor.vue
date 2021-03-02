@@ -11,14 +11,14 @@
 </template>
 
 <script lang="ts">
-    import { defineComponent, onMounted, onUnmounted, PropType, reactive, ref, watch, watchEffect } from 'vue';
+    import { defineComponent, onMounted, onUnmounted, PropType, reactive, ref, watch, getCurrentInstance } from 'vue';
     import cm from 'codemirror';
     import 'codemirror/mode/javascript/javascript';
     import "codemirror/lib/codemirror.css";
 
     export default defineComponent({
         props: {
-            editorText: {
+            editText: {
                 type: String,
                 default: '',
             },
@@ -26,16 +26,19 @@
                 type: Function as PropType<(newText: string) => void>
             }
         },
-        setup(props) {
+        setup(props, ctx) {
+            //console.log('Editor', props, ctx);
+            console.log("Editor Instance", getCurrentInstance());
+
             const elEditor = ref();
             let myEditor: cm.Editor;
 
-            const editorText = ref(props.editorText);
+            const editorText = ref(props.editText);
             const editorPos = reactive({ln: 0, col: 0});
             //const editorErr = ref(0);
 
             onMounted(() => {
-                console.log('Mounted');
+                //console.log('Mounted', props, ctx);
 
                 myEditor = cm(elEditor.value, {
                     value: editorText.value, // 'function test()\n{\n}\n',
@@ -58,8 +61,8 @@
                 myEditor.off('cursorActivity', onEditorcursorActivity);
             });
 
-            watch(() => props.editorText, () => {
-                editorText.value = props.editorText;
+            watch(() => props.editText, () => {
+                editorText.value = props.editText;
                 myEditor.setValue(editorText.value);
                 console.log('changed');
             });
@@ -135,6 +138,7 @@
 <style lang="scss">
     .CodeMirror {
         height: auto;
+        flex: 1;
     }
     .CodeMirror pre.errorMarker {
         background-color: #ff000080;

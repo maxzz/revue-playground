@@ -11,14 +11,20 @@
 </template>
 
 <script lang="ts">
-    import { defineComponent, reactive, ref } from "vue";
+    import { defineComponent, PropType, reactive, ref, getCurrentInstance } from "vue";
 
     export default defineComponent({
-        setup() {
+        props: {
+            onResize: {
+                type: Function as PropType<() => void>
+            },
+        },
+        setup(props) {
             const position = ref(0);
-            let onResize: (() => void) | null = null;
             const container = ref<HTMLElement>();
             const vertical = false;
+
+            console.log("SPLITPANE Instance", getCurrentInstance());
 
             const onMouseDown = function(event: MouseEvent) {
                 event.preventDefault(); // This is needed to prevent text selection in Safari
@@ -38,7 +44,7 @@
                     document.body.style.cursor = '';
                     document.removeEventListener('mousemove', moveHandler);
                     document.removeEventListener('mouseup', upHandler);
-                    onResize&& onResize();
+                    props.onResize && props.onResize();
                 };
 
                 document.addEventListener('mousemove', moveHandler);

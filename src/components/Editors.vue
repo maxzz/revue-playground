@@ -1,11 +1,11 @@
 <template>
     <div class="px-4 mb-4 flex flex-1">
-        <SplitPane>
+        <SplitPane :onResize="onSplitterResize">
             <template v-slot:a>
-                <Editor class="flex-1 border border-gray-200" :editorText="defaultCode" :onTextChange="onTextChange" />
+                <Editor class="flex-1 border border-gray-200" :editText="defaultCode" :onTextChange="onTextChange" />
             </template>
             <template v-slot:b>
-                <Editor class="flex-1 border border-green-200" :editor-text="secondEditorText" />
+                <Editor class="flex-1 border border-green-200" :edit-text="secondEditText" />
             </template>
         </SplitPane>
     </div>
@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-    import { ref, defineComponent } from "vue";
+    import { ref, defineComponent, getCurrentInstance } from "vue";
     import { start } from './convert';
     import { useToast } from "vue-toastification";
     import Editor from './Editor.vue';
@@ -27,7 +27,8 @@
         props: {},
         components: { Editor, SplitPane },
         setup: () => {
-            //console.log('start');
+            //console.log('start', props, ctx);
+            console.log("PARENT Instance", getCurrentInstance());
 
             const toast = useToast();
 
@@ -36,17 +37,22 @@
                 start();
             }
 
-            const secondEditorText = ref('');
+            const secondEditText = ref('');
             function onTextChange(newText: string) {
-                secondEditorText.value = newText;
+                secondEditText.value = newText;
                 //console.log(`newText "${newText}"`);
+            }
+
+            function onSplitterResize() {
+                
             }
 
             return { 
                 onBtnStart,
+                onSplitterResize,
                 onTextChange,
                 defaultCode,
-                secondEditorText,
+                secondEditText,
             };
         },
     });
