@@ -1,4 +1,4 @@
-import { parse } from "acorn";
+import acorn, { parse } from "acorn";
 
 class LineNumbers {
     private lineStarts: number[] = [];
@@ -88,3 +88,14 @@ export function start() {
 
     console.log('ast', JSON.stringify(ast, null, 4));
 }
+
+////////////////
+
+/* //https://github.com/rollup/plugins/blob/master/packages/strip/src/index.js
+function getName(node: acorn.Node) {
+    if (node.type === 'Identifier') return node.name;
+    if (node.type === 'ThisExpression') return 'this';
+    if (node.type === 'Super') return 'super';
+    return null;
+}
+ */
