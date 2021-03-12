@@ -1,11 +1,14 @@
 {
   "name": "reverse-vue-render",
   "version": "0.0.0",
+  "description": "AST in the ESTree format playground",
   "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "vuedx-typecheck . && vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "predeploy": "rm -rf dist && yarn build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "acorn": "^8.0.5",
